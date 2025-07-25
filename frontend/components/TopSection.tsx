@@ -74,7 +74,7 @@ const TopSection: React.FC<TopSectionProps> = ({  isMenuOpening, setIsMenuOpenin
     
     {/* Hier ist der Name der App */}
     <div className="flex flex-col justify-between items-start italic font-extrabold ">
-      BundesLiga-ChatBot
+      <img src='https://i.postimg.cc/8c0p84hL/Logo-without-BG.png' alt='Bundesliga-ChatBot' className='h-24'/>
     </div>
     
     
