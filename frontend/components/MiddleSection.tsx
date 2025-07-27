@@ -15,6 +15,8 @@ interface MiddleSectionProps {
   setConversationId: React.Dispatch<React.SetStateAction<string>>;
   question: string;
   setQuestion: React.Dispatch<React.SetStateAction<string>>;
+  lastQuestionAndAnswer: {question: string, answer: string} | null;
+  setLastQuestionAndAnswer: React.Dispatch<React.SetStateAction<{question: string, answer: string} | null>>;
   isAsking: boolean;
   setIsAsking: React.Dispatch<React.SetStateAction<boolean>>;
   setFirstQuestionAsked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,6 +35,8 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
   setConversationId,
   question,
   setQuestion,
+  lastQuestionAndAnswer,
+  setLastQuestionAndAnswer,
   isAsking,
   setIsAsking,
   setFirstQuestionAsked,
@@ -43,7 +47,7 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
 }) => {
   
   const [error, setError] = useState<string | null>(null);
-  const [lastQuestionAndAnswer, setLastQuestionAndAnswer,] = useState<{question: string, answer: string} | null>(null);
+  
   const lastQuestion = lastQuestionAndAnswer?.question || ''
   const lastAnswer = lastQuestionAndAnswer?.answer || ''
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -166,8 +170,9 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
       setFirstQuestionAsked(false);
       setConversations([]);
       setConversationId('');
-      setIsNewChat(true)
-      setIsNewChatOpened(false)
+      setIsNewChat(true);
+      setIsNewChatOpened(false);
+      setLastQuestionAndAnswer(null)
     
   }, [isNewChatOpened]);
 

@@ -39,6 +39,9 @@ const AppController = () => {
 
   // isAsking wird genutzt, um zu wissen, ob man gerade auf eine Antwort von Gemini wartet
   const [isAsking, setIsAsking] = useState(false);
+
+  // lastQuestionAndAnswer speichert die letzte Frage und Antwort
+  const [lastQuestionAndAnswer, setLastQuestionAndAnswer] = useState<{question: string, answer: string} | null>(null);
   
   // question speichert die aktuelle Frage
   const [question, setQuestion] = useState("");
@@ -71,6 +74,7 @@ const AppController = () => {
           email_address={currentUser.emailAddress}
           setFirstQuestionAsked={setFirstQuestionAsked}
           setConversations={setConversations}
+          setLastQuestionAndAnswer={setLastQuestionAndAnswer}
           
         />
       )}
@@ -97,6 +101,8 @@ const AppController = () => {
         setConversationId={setConversationId}
         question={question} 
         setQuestion ={setQuestion}
+        lastQuestionAndAnswer={lastQuestionAndAnswer}
+        setLastQuestionAndAnswer={setLastQuestionAndAnswer}
         isAsking={isAsking}
         setIsAsking={setIsAsking}
         setFirstQuestionAsked={setFirstQuestionAsked}

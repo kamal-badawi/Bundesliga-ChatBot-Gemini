@@ -43,6 +43,8 @@ def get_chatbot_question_and_answer_gemini(source, information, question, last_q
 
     Nutze dazu die letzte gestellte Frage {last_question} und deine Antwort auf die letzte Frage {last_answer}, um deine Ergebnisse zu verbessern.
 
+    Sollten Frage bezüglich die letzter Frage {last_question} oder letzter Antwort {last_answer} geben, gib diese letzte Frage {last_question} oder diese letzte Antwort {last_answer}  zurück
+
     Verhaltensregeln:
     - Wenn die verfügbaren Daten keine fundierte Antwort ermöglichen, gib exakt diesen Satz zurück: "Ich habe keine Informationen dazu."
     - Die Antwort muss sachlich, präzise und leicht verständlich formuliert sein.

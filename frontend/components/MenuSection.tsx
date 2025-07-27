@@ -20,6 +20,7 @@ interface MenuSectionProps {
   firstQuestionAsked: boolean;
   setFirstQuestionAsked: React.Dispatch<React.SetStateAction<boolean>>;
   setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
+  setLastQuestionAndAnswer: React.Dispatch<React.SetStateAction<{question: string, answer: string} | null>>;
   
 }
 
@@ -37,6 +38,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
   firstQuestionAsked,
   setFirstQuestionAsked,
   setConversations,
+  setLastQuestionAndAnswer,
   
 }) => {
   const [notification, setNotification] = useState<{
@@ -128,6 +130,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
             setConversationId('');
             setIsNewChat(true);
             setConversations([]);
+            setLastQuestionAndAnswer(null)
           }
           setConversationsInfo((prev) =>
             prev.filter((c) => c.conversation_id !== conversation_id)
