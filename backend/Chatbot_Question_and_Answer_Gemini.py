@@ -1,8 +1,12 @@
 # Wichtiger Hinweis: Das Prompt wurde mit ChatGPT verbessert
-def get_chatbot_question_and_answer_gemini(source, information, question) -> dict:
+def get_chatbot_question_and_answer_gemini(source, information, question, last_question, last_answer) -> dict:
     import google.generativeai as genai
     from RAG import dataframes_to_documents, build_vectorstore, retrieve_relevant_context
     from decouple import config
+
+    print('question: ',question)
+    print('last_question: ',last_question)
+    print('last_answer: ',last_answer)
 
     
     API_KEY = config("GOOGLE_GEMINI_API_KEY")
@@ -34,8 +38,10 @@ def get_chatbot_question_and_answer_gemini(source, information, question) -> dic
     {information}
 
     Aufgabe:
-    Beantworte folgende Frage ausschließlich basierend auf den oben genannten Kontextdaten:
+    Beantworte folgende Frage (aktuelle) ausschließlich basierend auf den oben genannten Kontextdaten:
     {question}
+
+    Nutze dazu die letzte gestellte Frage {last_question} und deine Antwort auf die letzte Frage {last_answer}, um deine Ergebnisse zu verbessern.
 
     Verhaltensregeln:
     - Wenn die verfügbaren Daten keine fundierte Antwort ermöglichen, gib exakt diesen Satz zurück: "Ich habe keine Informationen dazu."

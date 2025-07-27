@@ -122,8 +122,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
           await axios.delete('http://localhost:8000/delete_conversation_by_conversation_id', {
             data: { conversation_id },
           });
-          console.log('Current id: ',conversationId);
-          console.log('delete id: ',conversation_id);
+          
           if (conversationId === conversation_id){
             setFirstQuestionAsked(false);
             setConversationId('');

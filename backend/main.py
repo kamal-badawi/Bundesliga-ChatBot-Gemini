@@ -53,6 +53,8 @@ async def read_root():
 
 class QuestionRequest(BaseModel):
     question: str
+    last_question: str
+    last_answer: str
 
 @app.post("/question")
 async def ask_question(request: QuestionRequest) -> dict:
@@ -73,7 +75,9 @@ async def ask_question(request: QuestionRequest) -> dict:
     source = All_Data.get_all_data()
 
     question = request.question
-    response = get_chatbot_question_and_answer_gemini(source, information, question)
+    last_question = request.last_question
+    last_answer = request.last_answer
+    response = get_chatbot_question_and_answer_gemini(source, information, question, last_question, last_answer)
     answer = response.get("text")
     return {'answer': answer}
 

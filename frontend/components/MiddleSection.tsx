@@ -24,6 +24,7 @@ interface MiddleSectionProps {
   setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
 }
 
+
 const MiddleSection: React.FC<MiddleSectionProps> = ({
   isNewChat,
   setIsNewChat,
@@ -42,8 +43,13 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
 }) => {
   
   const [error, setError] = useState<string | null>(null);
+  const [lastQuestionAndAnswer, setLastQuestionAndAnswer,] = useState<{question: string, answer: string} | null>(null);
+  const lastQuestion = lastQuestionAndAnswer?.question || ''
+  const lastAnswer = lastQuestionAndAnswer?.answer || ''
   const bottomRef = useRef<HTMLDivElement>(null);
   const isProcessingRef = useRef(false);
+
+  
   
 
   // Hilfsfunktionen
@@ -145,9 +151,9 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
     }
   };
 
-  const getAnswer = async (question: string): Promise<string> => {
+  const getAnswer = async (question: string, lastQuestion: string, lastAnswer: string): Promise<string> => {
     try {
-      const response = await axios.post('http://localhost:8000/question', { question });
+      const response = await axios.post('http://localhost:8000/question', { question: question, last_question: lastQuestion, last_answer:lastAnswer});
       return response.data.answer;
     } catch (err) {
       console.error('Fehler beim Abrufen der Antwort:', err);
@@ -197,7 +203,7 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
 
         setConversations(prev => [...prev, newEntry]);
 
-        const answer = await getAnswer(question);
+        const answer = await getAnswer(question=question, lastQuestion , lastAnswer);
 
         if (currentConversationId) {
           await addDialogItem(userId, currentConversationId, question, answer);
@@ -229,6 +235,17 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
 
     processQuestion();
   }, [isAsking, question]);
+
+  // Letzte Frage und Antwort
+  useEffect(() => {
+  if (conversations.length > 0) {
+    const last = conversations[conversations.length - 1];
+    setLastQuestionAndAnswer({
+      question: last.question,
+      answer: last.answer
+    });
+  }
+}, [conversations]);
 
   return (
     <div className="flex flex-col h-full overflow-y-auto px-4 pb-32 space-y-6">
