@@ -4,10 +4,6 @@ def get_chatbot_question_and_answer_gemini(source, information, question, last_q
     from RAG import dataframes_to_documents, build_vectorstore, retrieve_relevant_context
     from decouple import config
 
-    print('question: ',question)
-    print('last_question: ',last_question)
-    print('last_answer: ',last_answer)
-
     
     API_KEY = config("GOOGLE_GEMINI_API_KEY")
 
@@ -53,7 +49,7 @@ def get_chatbot_question_and_answer_gemini(source, information, question, last_q
     - Die Ausgabe muss ein einzeiliger Fließtext sein - ohne Zeilenumbrüche oder unnötige Ausschmückungen.
     """
 
-    # Schritt 5: Anfrage an Gemini
+    
     model = genai.GenerativeModel("gemini-1.5-flash")
 
     try:

@@ -61,15 +61,19 @@ async def ask_question(request: QuestionRequest) -> dict:
     """
     Verarbeitet eine POST-Anfrage, um eine vom Benutzer gestellte Frage zu beantworten.
 
-    Diese Endpoint-Funktion nimmt eine Frage als Eingabe entgegen, sammelt allgemeine Informationen
-    sowie Datenquellen und übergibt diese an eine Chatbot-Funktion, die eine Antwort generiert.
-    Die Antwort wird anschließend als JSON-Dictionary zurückgegeben.
+    Diese Endpoint-Funktion nimmt eine Frage sowie Kontext aus vorherigen Fragen/Antworten entgegen,
+    sammelt allgemeine Informationen und Datenquellen, und übergibt diese an eine Chatbot-Funktion,
+    die eine Antwort generiert. Die Antwort wird anschließend als JSON-Dictionary zurückgegeben.
 
     Args:
-        question (str): Die vom Benutzer gestellte Frage.
+        request (QuestionRequest): Das Anfrageobjekt mit folgenden Feldern:
+            - question (str): Die aktuell vom Benutzer gestellte Frage
+            - last_question (str): Die vorherige Frage des Benutzers (für Kontext)
+            - last_answer (str): Die vorherige Antwort des Systems (für Kontext)
 
     Returns:
         dict: Ein Dictionary mit der vom Chatbot generierten Antwort unter dem Schlüssel 'answer'.
+              Beispiel: {'answer': 'Dies ist die generierte Antwort...'}
     """
     information = General_Information.get_general_information()
     source = All_Data.get_all_data()
