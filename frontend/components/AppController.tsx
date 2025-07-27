@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TopSection from './TopSection';
 import MiddleSection from './MiddleSection';
 import BottomSection from './BottomSection';
-import MenuSection from './MenuSection';
+import ChatHistorySection from './ChatHistorySection';
 
  export interface Conversation {
     question: string;
@@ -64,7 +64,7 @@ const AppController = () => {
       } bg-yellow-50 border-r-2 border-black overflow-y-auto`}
     >
       {isMenuOpening && (
-        <MenuSection
+        <ChatHistorySection
           isNewChat={isNewChat}
           setIsNewChat={setIsNewChat} 
           userId={currentUser.userId}

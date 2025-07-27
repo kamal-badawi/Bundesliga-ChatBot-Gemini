@@ -10,7 +10,7 @@ interface ConversationInfo {
   time: string;
 }
 
-interface MenuSectionProps {
+interface ChatHistorySectionProps {
   isNewChat: boolean;
   setIsNewChat: React.Dispatch<React.SetStateAction<boolean>>;
   userId: string;
@@ -28,7 +28,7 @@ interface GroupedConversations {
   [label: string]: ConversationInfo[];
 }
 
-const MenuSection: React.FC<MenuSectionProps> = ({
+const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
   isNewChat,
   setIsNewChat,
   userId,
@@ -226,7 +226,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
                 {items.map((conv) => (
                   <li
                     key={conv.conversation_id}
-                    className="px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer group"
+                    className={`px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer group ${conversationId === conv.conversation_id ? 'bg-purple-200' : 'hover:bg-gray-100'}`}
                     onClick={() => {
                       setConversationId(conv.conversation_id);
                       setIsNewChat(false);
@@ -322,4 +322,4 @@ const MenuSection: React.FC<MenuSectionProps> = ({
   );
 };
 
-export default MenuSection;
+export default ChatHistorySection;
