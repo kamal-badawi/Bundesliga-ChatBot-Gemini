@@ -226,7 +226,7 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
                 {items.map((conv) => (
                   <li
                     key={conv.conversation_id}
-                    className={`px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer group ${conversationId === conv.conversation_id ? 'bg-purple-200' : 'hover:bg-gray-100'}`}
+                    className={`px-4 py-3 hover:bg-gray-100 transition-colors cursor-pointer group ${conversationId === conv.conversation_id ? 'bg-blue-200 bg-stripes bg-opacity-20' : 'hover:bg-gray-100'}`}
                     onClick={() => {
                       setConversationId(conv.conversation_id);
                       setIsNewChat(false);
