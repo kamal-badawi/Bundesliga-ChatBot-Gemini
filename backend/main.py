@@ -23,7 +23,26 @@ import All_Data
 import General_Information
 
 
-app = FastAPI(version='1.0', title='Bundesliga-ChatBot')
+
+app = FastAPI(
+    title="Bundesliga-ChatBot",
+    version="1.0",
+    description=(
+        "Ein spezialisierter ChatBot, der Bundesliga-Daten in Echtzeit "
+        "über die OpenLigaDB-API bereitstellt. Nutzer können Fragen zu "
+        "Spielständen, Tabellen, Spielerstatistiken und mehr stellen."
+    ),
+    contact={
+        "name": "Kamal Badawi",
+        "email": "kamal.badawi@bundesliga-chatbot.com", 
+        "url": "https://www.bundesliga-chatbot.com/kamal-badawi"  
+    },
+    license_info={
+        "name": "MIT License",
+        "url": "https://opensource.org/licenses/MIT/bundesliga-chatbot"
+    }
+)
+
 
 # ORIGINS für das Frontend (React)
 origins = ['http://localhost:5173',
