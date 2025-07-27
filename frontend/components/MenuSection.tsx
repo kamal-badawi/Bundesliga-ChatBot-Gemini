@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { parse, differenceInCalendarDays, compareDesc } from 'date-fns';
+import type {Conversation} from './AppController';
 
-interface Conversation {
+interface ConversationInfo {
   conversation_id: string;
   title: string;
   date: string;
@@ -16,11 +17,12 @@ interface MenuSectionProps {
   setConversationId: React.Dispatch<React.SetStateAction<string>>;
   email_address: string;
   firstQuestionAsked: boolean;
+  setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   
 }
 
 interface GroupedConversations {
-  [label: string]: Conversation[];
+  [label: string]: ConversationInfo[];
 }
 
 const MenuSection: React.FC<MenuSectionProps> = ({
@@ -30,6 +32,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
   setConversationId,
   email_address,
   firstQuestionAsked,
+  setConversations,
   
 }) => {
   const [notification, setNotification] = useState<{
@@ -37,7 +40,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
     message: string;
   } | null>(null);
 
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [conversationsInfo, setConversationsInfo] = useState<ConversationInfo[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -59,7 +62,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
         time: String(conv.time || ''),
       }));
 
-      setConversations(formattedConversations);
+      setConversationsInfo(formattedConversations);
     } catch (error) {
       console.error('Gespräche konnten nicht geladen werden:', error);
       setNotification({
@@ -115,9 +118,10 @@ const MenuSection: React.FC<MenuSectionProps> = ({
           await axios.delete('http://localhost:8000/delete_conversation_by_conversation_id', {
             data: { conversation_id },
           });
-          setConversations((prev) =>
+          setConversationsInfo((prev) =>
             prev.filter((c) => c.conversation_id !== conversation_id)
           );
+          setConversations([]);
            setNotification({ type: 'success', message: `Unterhaltung wurde gelöscht` });
           break;
       }
@@ -137,7 +141,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
     }
   }, [notification]);
 
-  const groupConversationsByDate = (convs: Conversation[]): GroupedConversations => {
+  const groupConversationsByDate = (convs: ConversationInfo[]): GroupedConversations => {
     const now = new Date();
     const grouped: GroupedConversations = {};
 
@@ -171,7 +175,7 @@ const MenuSection: React.FC<MenuSectionProps> = ({
     return grouped;
   };
 
-  const filteredConversations = conversations.filter((conv) =>
+  const filteredConversations = conversationsInfo.filter((conv) =>
     conv.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

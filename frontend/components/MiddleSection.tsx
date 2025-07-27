@@ -3,13 +3,9 @@ import axios from 'axios';
 import TextToSpeech from './TextToSpeech';
 import ThinkingBlock from './ThinkingBlock';
 import CopyText from './CopyText';
+import type {Conversation} from './AppController';
 
-interface Conversation {
-  question: string;
-  answer: string;
-  date: string;
-  time: string;
-}
+
 
 interface MiddleSectionProps {
   isNewChat: boolean;
@@ -24,6 +20,8 @@ interface MiddleSectionProps {
   setFirstQuestionAsked: React.Dispatch<React.SetStateAction<boolean>>;
   isNewChatOpened: boolean;
   setIsNewChatOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  conversations: Conversation[];
+  setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
 }
 
 const MiddleSection: React.FC<MiddleSectionProps> = ({
@@ -39,8 +37,10 @@ const MiddleSection: React.FC<MiddleSectionProps> = ({
   setFirstQuestionAsked,
   isNewChatOpened,
   setIsNewChatOpened,
+  conversations,
+  setConversations,
 }) => {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
+  
   const [error, setError] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const isProcessingRef = useRef(false);

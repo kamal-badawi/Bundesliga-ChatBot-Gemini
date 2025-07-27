@@ -5,6 +5,14 @@ import MiddleSection from './MiddleSection';
 import BottomSection from './BottomSection';
 import MenuSection from './MenuSection';
 
+ export interface Conversation {
+    question: string;
+    answer: string;
+    date: string;
+    time: string;
+  }
+
+  
 
 // Da wir keine Register und Login Maske haben, nutzen wir die Daten vom folgenden Nutzer
 const AppController = () => {
@@ -13,6 +21,10 @@ const AppController = () => {
     emailAddress :'kamal.badawi@gmx.de',
 
   }
+
+ 
+   // Unterhaltungen.
+  const [conversations, setConversations] = useState<Conversation[]>([]);
 
   
   // conversationId wird genutzt um eine Unterhaltung zu löschen, per Mail zu schicken, lokal herunterzuladen
@@ -37,6 +49,8 @@ const AppController = () => {
   // gibt an, ob den Button (New Chat) geklickt wurde.
   const [isNewChatOpened, setIsNewChatOpened] = useState(false);
 
+ 
+
   // Wichtiger Hinweis: Das Stylen wurde mit GPT und Deepseek verbessert
   return (
   <div className="flex h-screen">
@@ -54,6 +68,7 @@ const AppController = () => {
           setConversationId={setConversationId}
           email_address={currentUser.emailAddress}
           firstQuestionAsked={firstQuestionAsked}
+          setConversations={setConversations}
           
         />
       )}
@@ -84,7 +99,9 @@ const AppController = () => {
         setIsAsking={setIsAsking}
         setFirstQuestionAsked={setFirstQuestionAsked}
         isNewChatOpened={isNewChatOpened}
-        setIsNewChatOpened={setIsNewChatOpened} />
+        setIsNewChatOpened={setIsNewChatOpened}
+        conversations={conversations}
+        setConversations={setConversations} />
 
         <BottomSection
           question={question} 
