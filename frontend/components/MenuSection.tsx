@@ -14,9 +14,11 @@ interface MenuSectionProps {
   isNewChat: boolean;
   setIsNewChat: React.Dispatch<React.SetStateAction<boolean>>;
   userId: string;
+  conversationId: string;
   setConversationId: React.Dispatch<React.SetStateAction<string>>;
   email_address: string;
   firstQuestionAsked: boolean;
+  setFirstQuestionAsked: React.Dispatch<React.SetStateAction<boolean>>;
   setConversations: React.Dispatch<React.SetStateAction<Conversation[]>>;
   
 }
@@ -29,9 +31,11 @@ const MenuSection: React.FC<MenuSectionProps> = ({
   isNewChat,
   setIsNewChat,
   userId,
+  conversationId,
   setConversationId,
   email_address,
   firstQuestionAsked,
+  setFirstQuestionAsked,
   setConversations,
   
 }) => {
@@ -118,10 +122,18 @@ const MenuSection: React.FC<MenuSectionProps> = ({
           await axios.delete('http://localhost:8000/delete_conversation_by_conversation_id', {
             data: { conversation_id },
           });
+          console.log('Current id: ',conversationId);
+          console.log('delete id: ',conversation_id);
+          if (conversationId === conversation_id){
+            setFirstQuestionAsked(false);
+            setConversationId('');
+            setIsNewChat(true);
+            setConversations([]);
+          }
           setConversationsInfo((prev) =>
             prev.filter((c) => c.conversation_id !== conversation_id)
           );
-          setConversations([]);
+          
            setNotification({ type: 'success', message: `Unterhaltung wurde gelöscht` });
           break;
       }

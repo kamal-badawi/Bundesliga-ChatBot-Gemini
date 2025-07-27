@@ -12,7 +12,7 @@ import MenuSection from './MenuSection';
     time: string;
   }
 
-  
+
 
 // Da wir keine Register und Login Maske haben, nutzen wir die Daten vom folgenden Nutzer
 const AppController = () => {
@@ -65,9 +65,11 @@ const AppController = () => {
           isNewChat={isNewChat}
           setIsNewChat={setIsNewChat} 
           userId={currentUser.userId}
+          conversationId={conversationId}
           setConversationId={setConversationId}
-          email_address={currentUser.emailAddress}
           firstQuestionAsked={firstQuestionAsked}
+          email_address={currentUser.emailAddress}
+          setFirstQuestionAsked={setFirstQuestionAsked}
           setConversations={setConversations}
           
         />
