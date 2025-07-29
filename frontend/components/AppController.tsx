@@ -18,6 +18,7 @@ import ChatHistorySection from './ChatHistorySection';
 const AppController = () => {
   const currentUser = {
     userId :'fan_1',
+    userName:'Kamal Badawi',
     emailAddress :'kamal.badawi@gmx.de',
 
   }
@@ -97,6 +98,7 @@ const AppController = () => {
         isNewChat={isNewChat}
         setIsNewChat={setIsNewChat}
         userId={currentUser.userId}
+        userName={currentUser.userName}
         conversationId={conversationId}
         setConversationId={setConversationId}
         question={question} 
