@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { parse, differenceInCalendarDays, compareDesc } from 'date-fns';
 import type {Conversation} from './AppController';
+import {QRCodeSVG } from 'qrcode.react';
 
 interface ConversationInfo {
   conversation_id: string;
   title: string;
   date: string;
   time: string;
+
 }
 
 interface ChatHistorySectionProps {
   isNewChat: boolean;
   setIsNewChat: React.Dispatch<React.SetStateAction<boolean>>;
   userId: string;
+  userName: string;
   conversationId: string;
   setConversationId: React.Dispatch<React.SetStateAction<string>>;
   email_address: string;
@@ -32,6 +35,7 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
   isNewChat,
   setIsNewChat,
   userId,
+  userName,
   conversationId,
   setConversationId,
   email_address,
@@ -304,6 +308,8 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
         )}
       </div>
 
+
+      
       {/* Notification */}
       {notification && (
         <div
@@ -318,6 +324,34 @@ const ChatHistorySection: React.FC<ChatHistorySectionProps> = ({
           {notification.message}
         </div>
       )}
+
+
+        
+        {/* User Info Section am unteren Rand */}
+        <div className="w-full pt-4 border-t-2 border-black bg-yellow-50 flex items-center justify-between rounded-b-lg">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-sm">
+              {userName?.charAt(0).toUpperCase() || 'U'}
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-gray-800 italic">
+                Angemeldet als: <span className="not-italic text-blue-600 font-bold">{userName || 'Unbekannter Benutzer'}</span>
+              </p>
+            </div>
+          </div>
+          
+          {/* QR Code mit schicker Umrandung */}
+          <div className=" bg-gray-50 rounded-3xl border border-gray-200">
+            <QRCodeSVG 
+              value={'https://github.com/kamal-badawi/Bundesliga-ChatBot-Gemini'} 
+              size={70}
+              level="H"
+              fgColor="#1e40af"
+              bgColor="transparent"
+            />
+          </div>
+        </div>
+
     </div>
   );
 };

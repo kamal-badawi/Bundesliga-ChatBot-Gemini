@@ -69,6 +69,7 @@ const AppController = () => {
           isNewChat={isNewChat}
           setIsNewChat={setIsNewChat} 
           userId={currentUser.userId}
+          userName={currentUser.userName}
           conversationId={conversationId}
           setConversationId={setConversationId}
           firstQuestionAsked={firstQuestionAsked}
