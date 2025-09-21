@@ -1,6 +1,7 @@
 # Diese Methode holt Informationen aus der API zu allen Spielergebnissen in der 1. Bundesliag im Saison 2025/26
 def fetch_all_matches_results() -> dict:
     import requests
+    import sqlite3
     import pandas as pd
     import numpy as np
     import Current_Matchday
@@ -9,110 +10,214 @@ def fetch_all_matches_results() -> dict:
     # Pandas Anzeigeoptionen anpassen
     Pandas_Settings.get_pandas_Settings()
 
+    
 
-    # API-Endpunkt für die Bundesliga-Tabelle
-    url_matches_results = f"https://api.openligadb.de/getmatchdata/bl1/2025"
+    
+    # Erstelle eine Datenbank-Tabelle (match_results)
+    def create_match_results_database_table():
+        connection = sqlite3.connect(r'APIs-Backup/match_results.db')
+        cursor = connection.cursor()
 
-    # Daten abrufen
-    response_matches_results = requests.get(url_matches_results)
-    data_matches_results = response_matches_results.json()
-    df_matches_results = pd.json_normalize(data_matches_results)
-    df_matches_goals = df_matches_results
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS match_results (
+                "index" INTEGER PRIMARY KEY AUTOINCREMENT,
+                matchDateTime TEXT,
+                "group_groupName" TEXT,
+                matchIsFinished INTEGER,
+                "team1_teamName" TEXT,
+                "team2_teamName" TEXT,
+                finaltime_pointsTeam1 REAL,
+                finaltime_pointsTeam2 REAL
+            )
+        ''')
+
+        connection.commit()
+        return connection
+    
+
+    # Daten aus der API in der Datenbank speichern
+    def create_api_data_backup(connection, df):
+        """
+        Löscht alte Daten in match_results und fügt neue Zeilen ein.
+        Schema bleibt erhalten (AUTOINCREMENT "index" bleibt).
+        """
+        cursor = connection.cursor()
+        
+        # gewünschte Spalten in der DB
+        desired_cols = ['matchDateTime', 'group_groupName', 'matchIsFinished', 'team1_teamName',
+       'team2_teamName', 'finaltime_pointsTeam1', 'finaltime_pointsTeam2']
+        
+        
+        # drop 'index', falls vom DataFrame vorhanden
+        if 'index' in df.columns:
+            df = df.drop(columns=['index'])
+        
+        # Spalten mappen / fehlende Spalten mit None füllen
+        mapped = {}
+        for col in desired_cols:
+            if col in df.columns:
+                mapped[col] = df[col]
+            else:
+                mapped[col] = pd.Series([None] * len(df), index=df.index)
+        df_insert = pd.DataFrame(mapped, columns=desired_cols)
+        df_insert = df_insert.where(pd.notnull(df_insert), None)  # NaN -> None
+
+        # Alte Daten löschen
+        cursor.execute("DELETE FROM match_results")
+
+        # Bulk Insert
+        placeholders = ",".join(["?"] * len(desired_cols))
+        insert_sql = f"INSERT INTO match_results ({', '.join(desired_cols)}) VALUES ({placeholders})"
+        rows = [tuple(row) for row in df_insert.itertuples(index=False, name=None)]
+        
+        if rows:
+            cursor.executemany(insert_sql, rows)
+        connection.commit()
+        return len(rows)
+    
+
+    try:
+        # API-Endpunkt für die Bundesliga-Tabelle
+        url_matches_results = f"https://api.openligadb.de/getmatchdata/bl1/2025"
+
+        # Daten abrufen
+        response_matches_results = requests.get(url_matches_results)
+        data_matches_results = response_matches_results.json()
+        df_matches_results = pd.json_normalize(data_matches_results)
+        df_matches_goals = df_matches_results
 
 
 
-    # *************************************************
-    # *************************************************
-    # *************************************************
+        # *************************************************
+        # *************************************************
+        # *************************************************
 
-    # TEIL 1 START
-    ######
-    ######
-    ######
-    # Infos zu den Teams (Namen und Icons) und Spielen
-    ######
-    ######
-    ######
-    needed_columns = ['matchDateTime', 'group.groupName','matchIsFinished', 'team1.teamName', 'team2.teamName']
+        # TEIL 1 START
+        ######
+        ######
+        ######
+        # Halbzeit und Endzeit Ergebnisse
+        ######
+        ######
+        ######
 
-    df_matches_results = df_matches_results.loc[:, needed_columns]
+        df_matches_goals = pd.json_normalize(df_matches_goals['matchResults'])
 
-    df_matches_results.columns = [
+
+        df_matches_goals.columns = ['halftime','finaltime']
+
+
+
+
+        df_matches_goals = pd.json_normalize(df_matches_goals['finaltime']).add_prefix('finaltime_')
+
+
+
+        df_matches_goals_needed_columns  = ['finaltime_pointsTeam1','finaltime_pointsTeam2']
+
+        df_matches_goals = df_matches_goals.loc[:, df_matches_goals_needed_columns]
+
+        
+
+        
+
+
+        # TEIL 1 ENDE
+        ######
+        ######
+        ######
+        # Halbzeit und Endzeit Ergebnisse
+        ######
+        ######
+        ######
+
+
+
+        # *************************************************
+        # *************************************************
+        # *************************************************
+
+        # TEIL 2 START
+        ######
+        ######
+        ######
+        # Infos zu den Teams (Namen und Icons) und Spielen
+        ######
+        ######
+        ######
+        needed_columns = ['matchDateTime', 'group.groupName','matchIsFinished', 'team1.teamName', 'team2.teamName']
+
+        df_matches_results = df_matches_results.loc[:, needed_columns]
+
+        
+
+        # TEIL 2 ENDE
+        ######
+        ######
+        ######
+        # Infos zu den Teams (Namen und Icons) und Spielen
+        ######
+        ######
+        ######
+
+    
+
+        # *************************************************
+        # *************************************************
+        # *************************************************
+
+        # TEIL 3 START
+        ######
+        ######
+        ######
+        # Weitere ETL-Schritte
+        ######
+        ######
+        ######
+
+        
+        df_matches_info = pd.concat([df_matches_results,df_matches_goals],axis=1)
+        
+        
+        # DB + Tabelle sicherstellen
+        conn = create_match_results_database_table()
+
+        needed_columns = ['matchDateTime', 'group_groupName', 'matchIsFinished', 'team1_teamName',
+                          'team2_teamName','finaltime_pointsTeam1', 'finaltime_pointsTeam2']
+        df_matches_info.columns = needed_columns
+        # Daten einfügen
+       
+        n_inserted = create_api_data_backup(conn, df_matches_info)
+
+
+    
+    except Exception as e: 
+        print(e)
+        # DB Fallback
+        conn = sqlite3.connect(r'APIs-Backup/match_results.db')
+        df_matches_info = pd.read_sql_query("SELECT matchDateTime, group_groupName, matchIsFinished, team1_teamName, team2_teamName, finaltime_pointsTeam1, finaltime_pointsTeam2 FROM match_results", conn)
+        
+        
+    
+
+    finally:
+        # Verbindung schließen
+        conn = sqlite3.connect(r'APIs-Backup/bundesliga_table.db')
+        conn.close()
+
+    
+    
+    
+    
+    df_matches_info.columns = [
                         "Spiel-Datum und -Zeit",
                         "Spieltagname",
                         "Spiel beendet (bool)",
                         "Team 1 Name",
-                        "Team 2 Name"
-                    ]
-
-
-    # TEIL 1 ENDE
-    ######
-    ######
-    ######
-    # Infos zu den Teams (Namen und Icons) und Spielen
-    ######
-    ######
-    ######
-
-    # *************************************************
-    # *************************************************
-    # *************************************************
-
-    # TEIL 2 START
-    ######
-    ######
-    ######
-    # Halbzeit und Endzeit Ergebnisse
-    ######
-    ######
-    ######
-
-    df_matches_goals = pd.json_normalize(df_matches_goals['matchResults'])
-
-
-    df_matches_goals.columns = ['halftime','finaltime']
-
-
-
-
-    df_matches_goals = pd.json_normalize(df_matches_goals['finaltime']).add_prefix('finaltime_')
-
-
-
-    df_matches_goals_needed_columns  = ['finaltime_pointsTeam1','finaltime_pointsTeam2']
-
-    df_matches_goals = df_matches_goals.loc[:, df_matches_goals_needed_columns]
-
-    df_matches_goals.columns = [
-                                "Endergebnis Team 1",
-                                "Endergebnis Team 2"
-                            ]
-
-
-    # TEIL 2 ENDE
-    ######
-    ######
-    ######
-    # Halbzeit und Endzeit Ergebnisse
-    ######
-    ######
-    ######
-
-    # *************************************************
-    # *************************************************
-    # *************************************************
-
-    # TEIL 3 START
-    ######
-    ######
-    ######
-    # Weitere ETL-Schritte
-    ######
-    ######
-    ######
-
-    df_matches_info = pd.concat([df_matches_results,df_matches_goals],axis=1)
+                        "Team 2 Name",
+                        "Endergebnis Team 1",
+                        "Endergebnis Team 2"
+                          ]
 
     # Neue Spalten für Datum und Zeit extrahieren
     df_matches_info['Spiel-Datum und -Zeit'] = pd.to_datetime(df_matches_info['Spiel-Datum und -Zeit'])
@@ -249,8 +354,8 @@ def fetch_all_matches_results() -> dict:
     response = {'df_matches_results': df_matches_info,
                 'description': description}
     
+   
     
-
     return response
 
 
