@@ -1,4 +1,4 @@
-# Diese Methode holt Informationen aus der API zur Tabelle in der 1. Bundesliag im Saison 2024/25
+# Diese Methode holt Informationen aus der API zur Tabelle in der 1. Bundesliag im Saison 2025/26
 def fetch_bundesliga_table() -> dict:
     import requests
     import pandas as pd
@@ -8,7 +8,7 @@ def fetch_bundesliga_table() -> dict:
     Pandas_Settings.get_pandas_Settings()
 
     # API-Endpunkt für die Bundesliga-Tabelle
-    url_bundesliga_table = "https://api.openligadb.de/getbltable/bl1/2024"
+    url_bundesliga_table = "https://api.openligadb.de/getbltable/bl1/2025"
 
     # Daten abrufen
     response_bundesliga_table = requests.get(url_bundesliga_table)
@@ -20,6 +20,7 @@ def fetch_bundesliga_table() -> dict:
     df_bundesliga_table.loc[:,'rank']  = df_bundesliga_table.loc[:,'index'] + 1
 
 
+    
     needed_columns = ['rank', 'teamName',  'points',
                       'opponentGoals', 'goals', 'matches', 'won', 'lost', 'draw', 'goalDiff']
 
@@ -54,10 +55,11 @@ def fetch_bundesliga_table() -> dict:
                 - Tordifferenz (Tore minus Gegentore) (Spaltenname: Tordifferenz)
             """
 
-
-
+    
+    
     response = {'df_bundesliga_table': df_bundesliga_table,
                         'description': description}
 
     return response
+
 

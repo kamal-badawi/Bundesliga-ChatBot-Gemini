@@ -1,4 +1,4 @@
-# Diese Methode holt Informationen aus der API zu den vorhandenen Teams in der 1. Bundesliag im Saison 2024/25
+# Diese Methode holt Informationen aus der API zu den vorhandenen Teams in der 1. Bundesliag im Saison 2025/26
 def fetch_all_bundesliga_teams():
     import requests
     import pandas as pd
@@ -8,7 +8,7 @@ def fetch_all_bundesliga_teams():
     Pandas_Settings.get_pandas_Settings()
 
     # API-Endpunkt für die Bundesliga-Tabelle
-    all_bundesliga_teams = "https://api.openligadb.de/getavailableteams/bl1/2024"
+    all_bundesliga_teams = "https://api.openligadb.de/getavailableteams/bl1/2025"
 
     # Daten werden abrgerufen
     response_all_bundesliga_teams = requests.get(all_bundesliga_teams)
@@ -35,7 +35,7 @@ def fetch_all_bundesliga_teams():
         """
 
 
-
+    
     response = {'df_all_bundesliga_teams': df_all_bundesliga_teams,
                     'description': description}
 

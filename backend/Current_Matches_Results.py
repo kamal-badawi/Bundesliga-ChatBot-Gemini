@@ -1,5 +1,4 @@
-# Diese Methode filtert die aktuellen Spielergebnisse (ab 01.01.2025)
-# Da die Saison jetzt zu ende ist, wurde ein Anker gesetzt, nach diesem Anker (31.12.2024) werden die Daten so manipuliert, als wären sie noch offen
+# Diese Methode filtert die aktuellen Spielergebnisse
 def get_current_matches_results() -> dict:
     import All_Matches_Results
 
@@ -12,5 +11,9 @@ def get_current_matches_results() -> dict:
 
     response = {'df_current_matches_results': df_current_matches_results,
                 'description': description}
+    
+    
 
     return response
+
+

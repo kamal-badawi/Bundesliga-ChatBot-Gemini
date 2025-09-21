@@ -1,6 +1,4 @@
-# Diese Methode filtert die vorherigen Spielergebnisse (bis 31.12.2024)
-# Da die Saison jetzt zu ende ist, wurde ein Anker gesetzt, nach diesem Anker (31.12.2024) werden die Daten so manipuliert, als wären sie noch offen
-
+# Diese Methode filtert die vorherigen Spielergebnisse
 def get_past_matches_results() -> dict:
     import All_Matches_Results
 
@@ -13,6 +11,7 @@ def get_past_matches_results() -> dict:
 
     response = {'df_past_matches_results': df_passt_matches_info,
                     'description': description}
+    
 
     return response
 

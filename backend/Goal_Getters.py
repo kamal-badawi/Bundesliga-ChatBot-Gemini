@@ -1,4 +1,4 @@
-# Diese Methode holt Informationen aus der API zu Torschützen in der 1. Bundesliag im Saison 2024/25
+# Diese Methode holt Informationen aus der API zu Torschützen in der 1. Bundesliag im Saison 2025/26
 
 def fetch_goal_getters() -> dict:
     import requests
@@ -9,7 +9,7 @@ def fetch_goal_getters() -> dict:
     Pandas_Settings.get_pandas_Settings()
 
     # API-Endpunkt für die Bundesliga-Tabelle
-    url_goal_getters = "https://api.openligadb.de/getgoalgetters/bl1/2024"
+    url_goal_getters = "https://api.openligadb.de/getgoalgetters/bl1/2025"
 
     # Daten abrufen
     response_goal_getters  = requests.get(url_goal_getters)
@@ -37,7 +37,10 @@ def fetch_goal_getters() -> dict:
                     - Anzahl der Tore in aller Spiele  (Spaltenname: Anzahl der Tore)
                 """
 
+    
     response = {'df_goal_getters': df_goal_getters,
                         'description': description}
 
     return response
+
+

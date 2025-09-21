@@ -15,12 +15,8 @@ def fetch_current_matchday() -> dict:
 
     current_matchday_name, current_matchday_number = df_current_matchday.iloc[0, 0:2]
 
-    # DUMMY LÖSCHEN
-    # DUMMY LÖSCHEN
-    current_matchday_name, current_matchday_number = '16. Spieltag', 16
-    # DUMMY LÖSCHEN
-    # DUMMY LÖSCHEN
-
+    
     response = {'current_matchday_name' : current_matchday_name,
                 'current_matchday_number' : int(current_matchday_number)}
     return response
+

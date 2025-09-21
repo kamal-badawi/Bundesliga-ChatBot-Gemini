@@ -1,4 +1,4 @@
-# Diese Methode holt Icons (Logos) aus der API zu den vorhandenen Teams in der 1. Bundesliag im Saison 2024/25
+# Diese Methode holt Icons (Logos) aus der API zu den vorhandenen Teams in der 1. Bundesliag im Saison 2025/26
 def fetch_teams_icons_urls() -> dict:
     import requests
     import pandas as pd
@@ -8,7 +8,7 @@ def fetch_teams_icons_urls() -> dict:
     Pandas_Settings.get_pandas_Settings()
 
     # API-Endpunkt für die Bundesliga-Tabelle
-    url_teams_icons_urls = "https://api.openligadb.de/getbltable/bl1/2024"
+    url_teams_icons_urls = "https://api.openligadb.de/getbltable/bl1/2025"
 
     # Daten abrufen
     response_teams_icons_urls = requests.get(url_teams_icons_urls)
@@ -35,7 +35,11 @@ def fetch_teams_icons_urls() -> dict:
                 - Name jedes Teams (Spaltenname: Teamname)
                 - Icon als URL für jedes Team (Spaltenname: Team-Icon-URL)
                 """
+    
+ 
     response = {'df_teams_icons_urls':df_teams_icons_urls,
                 'description':description}
-
+        
     return response
+
+

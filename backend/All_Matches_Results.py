@@ -1,5 +1,4 @@
-# Diese Methode holt Informationen aus der API zu allen Spielergebnissen in der 1. Bundesliag im Saison 2024/25
-# Da die Saison jetzt zu ende ist, wurde ein Anker gesetzt, nach diesem Anker (31.12.2024) werden die Daten so manipuliert, als wären sie noch offen
+# Diese Methode holt Informationen aus der API zu allen Spielergebnissen in der 1. Bundesliag im Saison 2025/26
 def fetch_all_matches_results() -> dict:
     import requests
     import pandas as pd
@@ -12,7 +11,7 @@ def fetch_all_matches_results() -> dict:
 
 
     # API-Endpunkt für die Bundesliga-Tabelle
-    url_matches_results = f"https://api.openligadb.de/getmatchdata/bl1/2024"
+    url_matches_results = f"https://api.openligadb.de/getmatchdata/bl1/2025"
 
     # Daten abrufen
     response_matches_results = requests.get(url_matches_results)
@@ -120,43 +119,24 @@ def fetch_all_matches_results() -> dict:
     df_matches_info.insert(2, 'Datum', df_matches_info['Spiel-Datum und -Zeit'].dt.date)
     df_matches_info.insert(3, 'Zeit', df_matches_info['Spiel-Datum und -Zeit'].dt.time)
 
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    # DUMMY LÖSCHEN TESTEN AB HIER
-    df_matches_info['Spiel beendet (bool)'] = np.where(
-        pd.to_datetime(df_matches_info['Datum']) < pd.Timestamp('2024-12-31'),
-        True,
-        False
-    )
-
-    df_matches_info['Endergebnis Team 1'] = np.where(
-        pd.to_datetime(df_matches_info['Datum']) < pd.Timestamp('2024-12-31'),
-        df_matches_info['Endergebnis Team 1'],
-        None
-    )
-
-    df_matches_info['Endergebnis Team 2'] = np.where(
-        pd.to_datetime(df_matches_info['Datum']) < pd.Timestamp('2024-12-31'),
-        df_matches_info['Endergebnis Team 2'],
-        None
-    )
-
-
-
-    # DUMMY LÖSCHEN TESTEN BIS HIER
-    # DUMMY LÖSCHEN TESTEN BIS HIER
-    # DUMMY LÖSCHEN TESTEN BIS HIER
-    # DUMMY LÖSCHEN TESTEN BIS HIER
-    # DUMMY LÖSCHEN TESTEN BIS HIER
-    # DUMMY LÖSCHEN TESTEN BIS HIER
+    
 
     df_matches_info['Anzahl der Tore'] = df_matches_info.loc[:,'Endergebnis Team 1'] + df_matches_info.loc[:,'Endergebnis Team 2']
 
-    df_matches_info['Spielergebnis'] = df_matches_info['Endergebnis Team 1'].astype(str) + ':' + df_matches_info['Endergebnis Team 2'].astype(str)
+    df_matches_info['Spielergebnis'] = (
+    df_matches_info['Endergebnis Team 1']
+        .astype(str)
+        .str.split('.')
+        .str[0]
+        .where(df_matches_info['Endergebnis Team 1'].notna())
+    + ':' +
+    df_matches_info['Endergebnis Team 2']
+        .astype(str)
+        .str.split('.')
+        .str[0]
+        .where(df_matches_info['Endergebnis Team 2'].notna()))
 
+    
 
 
     df_matches_info['Gewinner'] = np.where(
@@ -265,10 +245,15 @@ def fetch_all_matches_results() -> dict:
                         - Punkte für Team 1 (Spaltenname: Team 1 Punkte)
                         - Punkte für Team 2 (Spaltenname: Team 2 Punkte)
                     """
-
+    
     response = {'df_matches_results': df_matches_info,
                 'description': description}
     
-   
+    
 
     return response
+
+
+
+
+

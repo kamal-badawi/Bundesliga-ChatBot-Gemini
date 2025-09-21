@@ -1,6 +1,5 @@
 
-# Diese Methode filtert die nächsten Spielergebnisse (ab 01.01.2025)
-# Da die Saison jetzt zu ende ist, wurde ein Anker gesetzt, nach diesem Anker (31.12.2024) werden die Daten so manipuliert, als wären sie noch offen
+# Diese Methode filtert die nächsten Spielergebnisse
 def get_next_upcoming_Matches_results() -> dict:
     import All_Matches_Results
 
@@ -13,6 +12,8 @@ def get_next_upcoming_Matches_results() -> dict:
 
     response = {'df_upcoming_matches_results': df_upcoming_matches_info,
                 'description': description}
+    
+   
 
     return response
 

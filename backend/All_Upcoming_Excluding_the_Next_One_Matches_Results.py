@@ -1,5 +1,4 @@
-# Diese Methode filtert die kommenden aber nicht die nächsten Spielergebnsise (ab 01.01.2025)
-# Da die Saison jetzt zu ende ist, wurde ein Anker gesetzt, nach diesem Anker (31.12.2024) werden die Daten so manipuliert, als wären sie noch offen
+# Diese Methode filtert die kommenden aber nicht die nächsten Spielergebnsise
 def get_all_upcoming_excluding_the_next_one_results() -> dict:
     import All_Matches_Results
 
@@ -12,5 +11,9 @@ def get_all_upcoming_excluding_the_next_one_results() -> dict:
 
     response = {'df_all_upcoming_excluding_the_next_one_matches_info': df_all_upcoming_excluding_the_next_one_matches_info,
                     'description': description}
+    
+   
 
     return response
+
+
