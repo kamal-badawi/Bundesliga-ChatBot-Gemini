@@ -3,8 +3,10 @@ def fetch_current_matchday() -> dict:
     import requests
     import sqlite3
     import pandas as pd
+    from decouple import config
 
-
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
 
     # Erstelle eine Datenbank-Tabelle (current_match_day)
     def create_current_match_day_database_table():
@@ -72,7 +74,7 @@ def fetch_current_matchday() -> dict:
     try:
 
         # API-Endpunkt für den aktuellen Spieltag
-        url_current_matchday = "https://api.openligadb.de/getcurrentgroup/bl1"
+        url_current_matchday = f"https://{DATA_SOURCE}/getcurrentgroup/bl1"
 
         # Daten abrufen
         response_current_matchday = requests.get(url_current_matchday)

@@ -4,9 +4,13 @@ def fetch_teams_icons_urls() -> dict:
     import sqlite3
     import pandas as pd
     import Pandas_Settings
+    from decouple import config
 
     # Pandas Anzeigeoptionen anpassen
     Pandas_Settings.get_pandas_Settings()
+
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
 
     # Erstelle eine Datenbank-Tabelle (teams_icons_urls)
     def create_teams_icons_urls_database_table():
@@ -75,7 +79,7 @@ def fetch_teams_icons_urls() -> dict:
 
     try:
         # API-Endpunkt für die Teams Icons Urls
-        url_teams_icons_urls = "https://api.openligadb.de/getbltable/bl1/2025"
+        url_teams_icons_urls = f"https://{DATA_SOURCE}/getbltable/bl1/2025"
 
         # Daten abrufen
         response_teams_icons_urls = requests.get(url_teams_icons_urls)

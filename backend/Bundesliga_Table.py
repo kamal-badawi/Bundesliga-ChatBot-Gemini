@@ -4,9 +4,16 @@ def fetch_bundesliga_table() -> dict:
     import sqlite3
     import pandas as pd
     import Pandas_Settings
+    from decouple import config
 
     # Pandas Anzeigeoptionen anpassen
     Pandas_Settings.get_pandas_Settings()
+
+
+    
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
+    print('DATA_SOURCE: ',DATA_SOURCE)
 
 
     # Erstelle eine Datenbank-Tabelle (bundesliga_table)
@@ -83,7 +90,7 @@ def fetch_bundesliga_table() -> dict:
     # -------------------------
     try:
         # API-Daten abrufen
-        url = "https://api.openligadb.de/getbltable/bl1/2025"
+        url = f"https://{DATA_SOURCE}/getbltable/bl1/2025"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()

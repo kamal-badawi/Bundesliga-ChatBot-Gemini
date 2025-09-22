@@ -4,10 +4,13 @@ def fetch_all_bundesliga_teams():
     import sqlite3
     import pandas as pd
     import Pandas_Settings
+    from decouple import config
 
     # Pandas Anzeigeoptionen anpassen, um alle Spalten anzuzuegen
     Pandas_Settings.get_pandas_Settings()
 
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
 
     # Erstelle eine Datenbank-Tabelle (bundesliga_table)
     def create_available_teams_database_table():
@@ -72,7 +75,7 @@ def fetch_all_bundesliga_teams():
 
     try:
         # API-Endpunkt für die Available-Teams
-        all_bundesliga_teams = "https://api.openligadb.de/getavailableteams/bl1/2025"
+        all_bundesliga_teams = f"https://{DATA_SOURCE}/getavailableteams/bl1/2025"
 
         # Daten werden abrgerufen
         response_all_bundesliga_teams = requests.get(all_bundesliga_teams)

@@ -6,12 +6,14 @@ def fetch_all_matches_results() -> dict:
     import numpy as np
     import Current_Matchday
     import Pandas_Settings
+    from decouple import config
 
     # Pandas Anzeigeoptionen anpassen
     Pandas_Settings.get_pandas_Settings()
 
     
-
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
     
     # Erstelle eine Datenbank-Tabelle (match_results)
     def create_match_results_database_table():
@@ -78,7 +80,7 @@ def fetch_all_matches_results() -> dict:
 
     try:
         # API-Endpunkt für die Bundesliga-Tabelle
-        url_matches_results = f"https://api.openligadb.de/getmatchdata/bl1/2025"
+        url_matches_results = f"https://{DATA_SOURCE}/getmatchdata/bl1/2025"
 
         # Daten abrufen
         response_matches_results = requests.get(url_matches_results)

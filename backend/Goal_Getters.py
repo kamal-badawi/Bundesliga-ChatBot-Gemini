@@ -5,9 +5,14 @@ def fetch_goal_getters() -> dict:
     import sqlite3
     import pandas as pd
     import Pandas_Settings
+    from decouple import config
 
     # Pandas Anzeigeoptionen anpassen
     Pandas_Settings.get_pandas_Settings()
+
+
+    # Datenquelle (APIs)
+    DATA_SOURCE = config("DATA_SOURCE")
 
 
     # Erstelle eine Datenbank-Tabelle (goal_getters)
@@ -72,7 +77,7 @@ def fetch_goal_getters() -> dict:
     try:
 
         # API-Endpunkt für die Bundesliga-Tabelle
-        url_goal_getters = "https://api.openligadb.de/getgoalgetters/bl1/2025"
+        url_goal_getters = f"https://{DATA_SOURCE}/getgoalgetters/bl1/2025"
 
         # Daten abrufen
         response_goal_getters  = requests.get(url_goal_getters)
