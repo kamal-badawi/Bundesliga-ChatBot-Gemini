@@ -93,7 +93,7 @@ def fetch_all_bundesliga_teams():
         
     except Exception as e:
         # DB Fallback
-        conn = sqlite3.connect(r'/APIs-Backup/available_teams.db')
+        conn = sqlite3.connect(r'APIs-Backup/available_teams.db')
         df_all_bundesliga_teams = pd.read_sql_query("SELECT * FROM available_teams", conn)
        
 

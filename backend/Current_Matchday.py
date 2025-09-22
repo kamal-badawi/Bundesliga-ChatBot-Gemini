@@ -7,7 +7,7 @@ def fetch_current_matchday() -> dict:
 
     # Datenquelle (APIs)
     DATA_SOURCE = config("DATA_SOURCE")
-
+    
     # Erstelle eine Datenbank-Tabelle (current_match_day)
     def create_current_match_day_database_table():
         connection_CMD = sqlite3.connect(r'APIs-Backup/current_match_day.db')
@@ -75,6 +75,7 @@ def fetch_current_matchday() -> dict:
 
         # API-Endpunkt für den aktuellen Spieltag
         url_current_matchday = f"https://{DATA_SOURCE}/getcurrentgroup/bl1"
+        
 
         # Daten abrufen
         response_current_matchday = requests.get(url_current_matchday)
@@ -106,9 +107,10 @@ def fetch_current_matchday() -> dict:
         conn_CMD = sqlite3.connect(r'APIs-Backup/current_match_day.db')
         df_current_matchday = pd.read_sql_query("SELECT groupName, groupOrderID FROM current_match_day", conn_CMD)
         current_matchday_name = df_current_matchday.iloc[0, df_current_matchday.columns.get_loc('groupName')]
-        group_order_id_raw = df_current_matchday.iloc[0][df_current_matchday.columns.get_loc('groupOrderID')]
+        group_order_id_raw = df_current_matchday.loc[0, 'groupOrderID']
         current_matchday_number = int(group_order_id_raw)
-       
+
+        
        
 
     finally:
@@ -125,6 +127,7 @@ def fetch_current_matchday() -> dict:
   
     
     return response
+
 
 
 

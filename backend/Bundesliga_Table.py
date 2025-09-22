@@ -13,7 +13,7 @@ def fetch_bundesliga_table() -> dict:
     
     # Datenquelle (APIs)
     DATA_SOURCE = config("DATA_SOURCE")
-    print('DATA_SOURCE: ',DATA_SOURCE)
+    
 
 
     # Erstelle eine Datenbank-Tabelle (bundesliga_table)
