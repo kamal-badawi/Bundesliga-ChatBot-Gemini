@@ -50,7 +50,7 @@ def get_chatbot_question_and_answer_gemini(source, information, question, last_q
     """
 
     
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-pro")
 
     try:
         response = model.generate_content(prompt)

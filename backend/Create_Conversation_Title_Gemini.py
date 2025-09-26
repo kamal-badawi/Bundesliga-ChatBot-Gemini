@@ -24,7 +24,7 @@ def create_conversation_title_gemini(questions_and_answers) -> str:
     - Gib nur den Titel als einzeiligen Fließtext aus - nichts weiter
     """
 
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-pro")
     max_retries = 3
     retry_delay = 60
 
